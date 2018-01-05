@@ -3,8 +3,22 @@
   <head>
     <title>Scheme Count</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/codemirror.css">
   </head>
   <body>
+    <div>
+      <textarea placeholder="type scheme code here" id="text-editor"></textarea>
+    </div>
+    <script type="text/javascript" src="js/codemirror.js"></script>
+    <script type="text/javascript" src="js/scheme.js"></script>
+    <script type="text/javascript">
+      var myTextarea = document.getElementById("text-editor");
+      var editor = CodeMirror.fromTextArea(myTextarea, {
+        lineNumbers: true,
+        mode: "scheme",
+        indentUnit: 4,
+      });
+    </script>
   </body>
 </html>
