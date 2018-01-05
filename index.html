@@ -8,7 +8,13 @@
   </head>
   <body>
     <div>
-      <textarea placeholder="type scheme code here" id="text-editor"></textarea>
+      <textarea placeholder="type scheme code here" id="text-editor" autofocus></textarea>
+    </div>
+    <div>
+      <button type="button" onclick="displayCode()">Visualize</button>
+    </div>
+    <div>
+      <p id="code"></p>
     </div>
     <script type="text/javascript" src="js/codemirror.js"></script>
     <script type="text/javascript" src="js/scheme.js"></script>
@@ -19,6 +25,12 @@
         mode: "scheme",
         indentUnit: 4,
       });
+    </script>
+    <script type="text/javascript">
+      function displayCode() {
+      	var code = editor.getValue("\n");
+        document.getElementById("code").innerHTML = "<pre><code>"+code+"</code></pre>";
+      }
     </script>
   </body>
 </html>
