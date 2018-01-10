@@ -11,13 +11,13 @@
       <textarea placeholder="type scheme code here" id="text-editor" autofocus></textarea>
     </div>
     <div>
-      <button type="button" onclick="displayCode()">Visualize</button>
+      <button type="button" onclick="editor.save(); displayCode()">Visualize</button>
     </div>
     <div>
-      <button type="button" onclick="displayCode()">Next ></button>
+      <button type="button">Next ></button>
     </div>
     <div>
-      <button type="button" onclick="displayCode()">< Prev</button>
+      <button type="button">< Prev</button>
     </div>
     <div>
       <p id="code"></p>
@@ -46,8 +46,7 @@
     </script>
     <script type="text/javascript">
       function displayCode() {
-      	var code = editor.getValue("\n");
-        document.getElementById("code").innerHTML = "<pre><code>"+code+"</code></pre>";
+        document.getElementById("code").innerHTML = "<pre><code>"+myTextarea.value+"</code></pre>";
       }
     </script>
   </body>
