@@ -11,7 +11,7 @@
       <textarea placeholder="type scheme code here" id="text-editor" autofocus></textarea>
     </div>
     <div>
-      <button type="button" onclick="editor.save(); displayCode()">Visualize</button>
+      <button type="button" id="visualize">Visualize</button>
     </div>
     <div>
       <button type="button">Next ></button>
@@ -21,12 +21,21 @@
     </div>
     <div>
       <p id="code"></p>
+      <p id="test">original</p>
     </div>
     <div>
       <table>
         <tr>
-          <th><code>scheme_eval()</code></th>
-          <th><code>scheme_apply()</code></th> 
+          <th>
+            <code>
+              scheme_eval()
+            </code>
+          </th>
+          <th>
+            <code>
+              scheme_apply()
+            </code>
+          </th> 
         </tr>
         <tr>
           <td>0</td>
@@ -36,6 +45,7 @@
     </div>
     <script type="text/javascript" src="js/codemirror.js"></script>
     <script type="text/javascript" src="js/scheme.js"></script>
+    <script type="text/javascript" src="js/jispy.js"></script>
     <script type="text/javascript">
       var myTextarea = document.getElementById("text-editor");
       var editor = CodeMirror.fromTextArea(myTextarea, {
@@ -45,8 +55,19 @@
       });
     </script>
     <script type="text/javascript">
+      document.getElementById("visualize").addEventListener("click", visualize);
+      function visualize() {
+      	editor.save();
+      	displayCode();
+      	displayTest();
+      }
+
       function displayCode() {
         document.getElementById("code").innerHTML = "<pre><code>"+myTextarea.value+"</code></pre>";
+      }
+
+      function displayTest() {
+      	document.getElementById("test").innerHTML = tokenize(myTextarea.value);
       }
     </script>
   </body>
