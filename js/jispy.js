@@ -3,6 +3,10 @@
  * Based on Peter Norvig's Lispy scheme interpreter
  */
 
+
+// *** PARSER ***
+
+// trim from Shantanu Inamdar's Lisp2JS2
 String.prototype.trim = function () {
     return this.replace(/^\s+|\s+$/g, '');
 };
@@ -11,24 +15,28 @@ function parse(input) {
     var tokens = tokenize(input);
     var expressions = [];
     while (tokens.length) {
-        var expression = [tokens.shift()];
-        var nests = 0;
-        while (tokens[0] !== ")" || nests !== 0) {
-            var token = tokens.shift();
-            if (tokens.length === 0) {
-                throw new SyntaxError("unexpected EOF missing )");
-            }
-            if (token === "(") {
-                nests++;
-            } else if (token === ")") {
-                nests--;
-            }
-            expression.push(token);
-        }
-        expression.push(tokens.shift());    // pushes last parentheses
-        expressions.push(read_from_tokens(expression));
+        expressions.push(read_from_tokens(next_expr(tokens)));
     }
     return expressions;
+}
+
+function next_expr(tokens) {
+    var expression = [tokens.shift()];
+    var nests = 0;
+    while (tokens[0] !== ")" || nests !== 0) {
+        var token = tokens.shift();
+        if (tokens.length === 0) {
+            throw new SyntaxError("unexpected EOF missing )");
+        }
+        if (token === "(") {
+            nests++;
+        } else if (token === ")") {
+            nests--;
+        }
+        expression.push(token);
+    }
+    expression.push(tokens.shift());    // push last ")"
+    return expression;
 }
 
 function tokenize(input) {
@@ -61,6 +69,10 @@ function atom(token) {
         return +token;
     }
 }
+
+// *** EVALUATOR ***
+
+
 
 // var repl = function (input) {
 //  try {
