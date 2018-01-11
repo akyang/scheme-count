@@ -4,7 +4,7 @@
  */
 
 
-// *** PARSER ***
+// *** READER ***
 
 // trim from Shantanu Inamdar's Lisp2JS2
 String.prototype.trim = function () {
@@ -70,8 +70,32 @@ function atom(token) {
     }
 }
 
+// *** ENVIRONMENTS ***
+class Env {
+    constructor(params=[], args=[], parent=undefined) {
+        this.bindings = new Map(zip(params, args));
+        this.parent = parent;
+    }
+    function find(name) {
+        return this if (this.bindings.has(name)) else this.parent.find(name);
+    }
+}
+
+function zip(first, second) {
+    return first.map(function(e, i) {
+        return [e, second[i]];
+    });
+}
+
 // *** EVALUATOR ***
 
+function scheme_eval(expr, env) {
+
+}
+
+function scheme_apply(procedure, args, env) {
+
+}
 
 
 // var repl = function (input) {
