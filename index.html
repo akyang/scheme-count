@@ -58,16 +58,16 @@
       document.getElementById("visualize").addEventListener("click", visualize);
       function visualize() {
       	editor.save();
-      	displayCode();
+      	document.getElementById("code").innerHTML = "<pre><code>"+myTextarea.value+"</code></pre>";
       	displayTest();
       }
 
       function displayCode() {
-        document.getElementById("code").innerHTML = "<pre><code>"+myTextarea.value+"</code></pre>";
+        
       }
 
       function displayTest() {
-      	document.getElementById("test").innerHTML = tokenize(myTextarea.value);
+      	document.getElementById("test").innerHTML = parse(myTextarea.value);
       }
     </script>
   </body>
