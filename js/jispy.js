@@ -77,7 +77,11 @@ class Env {
         this.parent = parent;
     }
     function find(name) {
-        return this if (this.bindings.has(name)) else this.parent.find(name);
+        if (this.bindings.has(name)) {
+            return this;
+        } else {
+            return this.parent.find(name);
+        }
     }
 }
 
