@@ -6,7 +6,7 @@
 
 // *** READER ***
 
-// trim from Shantanu Inamdar's Lisp2JS2
+// trim implementation from Shantanu Inamdar's Lisp2JS2
 String.prototype.trim = function () {
     return this.replace(/^\s+|\s+$/g, '');
 };
@@ -71,13 +71,14 @@ function atom(token) {
 }
 
 // *** ENVIRONMENTS ***
-class Env {
+class Env extends Map {
     constructor(params=[], args=[], parent=undefined) {
-        this.bindings = new Map(zip(params, args));
+        super(zip(params, args));
         this.parent = parent;
     }
+
     function find(name) {
-        if (this.bindings.has(name)) {
+        if (this.has(name)) {
             return this;
         } else {
             return this.parent.find(name);
