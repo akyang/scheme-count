@@ -3,7 +3,7 @@
 var PRIMITIVES = [];
 var add_primitives = [];
 
-/*
+/* Given primitive method utilizing @property
 function primitive(...names) {
     function add(fn) {
         for (var i = 0; i < names.length; i++) {
