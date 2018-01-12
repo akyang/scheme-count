@@ -7,10 +7,12 @@
 // *** READER ***
 
 // trim implementation from Shantanu Inamdar's Lisp2JS2
+// removes whitespace from beginning and end
 String.prototype.trim = function () {
     return this.replace(/^\s+|\s+$/g, '');
 };
 
+// Parses scheme into an array of expressions
 function parse(input) {
     var tokens = tokenize(input);
     var expressions = [];
@@ -20,6 +22,7 @@ function parse(input) {
     return expressions;
 }
 
+// builds the next expression
 function next_expr(tokens) {
     var expression = [tokens.shift()];
     var nests = 0;
@@ -39,10 +42,12 @@ function next_expr(tokens) {
     return expression;
 }
 
+// tokenizes scheme code
 function tokenize(input) {
     return input.replace(/\(/g, " ( ").replace(/\)/g, " ) ").trim().split(/\s+/g);
 }
 
+// builds expressions into its syntax tree
 function read_from_tokens(tokens) {
     if (tokens.length === 0) {
         throw new SyntaxError("unexpected EOF while reading");
@@ -71,7 +76,9 @@ function atom(token) {
 }
 
 // *** ENVIRONMENTS ***
-class Env extends Map {
+var HashMap = require("hashmap");
+
+class Env extends HashMap {
     constructor(params=[], args=[], parent=undefined) {
         super(zip(params, args));
         this.parent = parent;
@@ -80,8 +87,10 @@ class Env extends Map {
     function find(name) {
         if (this.has(name)) {
             return this;
-        } else {
+        } else if (this.parent) {
             return this.parent.find(name);
+        } else {
+            throw new ReferenceError(`${name} is not defined`);
         }
     }
 }
