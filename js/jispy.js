@@ -87,7 +87,7 @@ class Env extends HashMap {
 
     function find(name) {
         if (this.has(name)) {
-            return this.get(name);
+            return this;
         } else if (this.parent) {
             return this.parent.find(name);
         } else {
