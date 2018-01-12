@@ -93,7 +93,6 @@ class Env extends HashMap {
         } else {
             throw new ReferenceError(`${name} is not defined`);
         }
-        throw new ReferenceError('expression not found');
     }
 }
 
@@ -116,8 +115,8 @@ function scheme_eval(expr, env) {
         throw new SyntaxError('malformed list');
     }
     var first = expr[0], rest = expr[1];
-    if (scheme_symbolp(first) && special_forms.has(first)) {
-        return special_forms[first](rest, env);
+    if (scheme_symbolp(first) && SPECIAL_FORMS.has(first)) {
+        return SPECIAL_FORMS[first](rest, env);
     } else {
         var operator = scheme_eval(first, env);
         var operands = rest.map(function(x) {
@@ -143,12 +142,21 @@ function check_procedure(procedure) {
 }
 
 // *** SPECIAL_FORMS ***
-var special_forms = new Map();
-var special_forms_names = ['and', 'begin', 'cond', 'define', 'if', 'lambda', 'let', 'or', 'quote'];
-var special_forms_functions = [do_and_form, do_begin_form, do_cond_form, do_define_form, do_if_form, do_lambda_form, do_let_form, do_or_form, do_quote_form];
-for (var i = 0; i < special_forms_names.length; i++) {
-    special_forms.set(special_forms_names[i], special_forms_functions[i]);
+var SPECIAL_FORMS = new Map();
+var special_forms_names = ['and', 'begin', 'cond', 'define', 'if', 'lambda',
+                           'let', 'or', 'quote'];
+var special_forms_functions = [do_and_form, do_begin_form, do_cond_form,
+                               do_define_form, do_if_form, do_lambda_form,
+                               do_let_form, do_or_form, do_quote_form];
+
+function set_special_forms(names, functions) {
+    for (var i = 0; i < names.length; i++) {
+        SPECIAL_FORMS.set(names[i], functions[i]);
+    }
 }
+set_special_forms(special_forms_names, special_forms_functions);
+
+
 
 function do_define_form(expressions, env) {
 
