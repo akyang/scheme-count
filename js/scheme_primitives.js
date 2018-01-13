@@ -3,7 +3,7 @@
 var PRIMITIVES = [];
 
 // Each pair in primitive_pairs will have form [name, function]
-function add_primitive(...primitive_pairs) {
+function add_primitives(...primitive_pairs) {
     for (var i = 0; i < primitive_pairs.length; i++) {
         PRIMITIVES.push(primitive_pairs[i]);
     }
