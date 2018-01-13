@@ -3,8 +3,6 @@
  * Based on Peter Norvig's Lispy scheme interpreter
  */
 
-import * from 'scheme_primitives';
-
 // *** READER ***
 
 // trim implementation from Shantanu Inamdar's Lisp2JS2
@@ -79,6 +77,13 @@ function atom(token) {
 // *** ENVIRONMENTS ***
 var HashMap = require("hashmap");
 
+function standard_env() {
+    env = Env();
+    for (var i = 0; i < PRIMITIVES.length; i++) {
+        env.define(PRIMITIVES[i][0], PRIMITIVES[i][1]);
+    }
+}
+
 class Env extends HashMap {
     constructor(params=[], args=[], parent=undefined) {
         super(zip(params, args));
@@ -87,12 +92,16 @@ class Env extends HashMap {
 
     function find(name) {
         if (this.has(name)) {
-            return this;
+            return this.get(name);
         } else if (this.parent) {
             return this.parent.find(name);
         } else {
             throw new ReferenceError(`${name} is not defined`);
         }
+    }
+
+    function define(symbol, value) {
+        this.set(symbol, value);
     }
 }
 
@@ -102,6 +111,7 @@ function zip(first, second) {
     });
 }
 
+var global_env = standard_env();
 // *** EVALUATE/APPLY ***
 
 function scheme_eval(expr, env) {
