@@ -1,24 +1,11 @@
 // *** PRIMITIVE OPERATIONS ***
 
 var PRIMITIVES = [];
-var add_primitives = [];
-
-/* Given primitive method utilizing @property
-function primitive(...names) {
-    function add(fn) {
-        for (var i = 0; i < names.length; i++) {
-            PRIMITIVES.push([names[i], fn, names[0]]);
-        }
-        return fn;
-    }
-    return add;
-}
-*/
 
 // Each pair in primitive_pairs will have form [name, function]
-function primitive(...primitive_pairs) {
+function add_primitive(...primitive_pairs) {
     for (var i = 0; i < primitive_pairs.length; i++) {
-        PRIMITIVES.push([primitive_pairs[i][0], primitive_pairs[i][1]]);
+        PRIMITIVES.push(primitive_pairs[i]);
     }
 }
 
@@ -32,7 +19,7 @@ function check_type(val, predicate, k, name) {
 function scheme_booleanp(x) {
     return (x === true) || (x === false);
 }
-add_primitives.push(["boolean?", scheme_booleanp]);
+add_primitives(["boolean?", scheme_booleanp]);
 
 function scheme_truep(val) {
     return val !=== false;
@@ -45,7 +32,7 @@ function scheme_falsep(val) {
 function scheme_not(x) {
     return !scheme_truep(x);
 }
-add_primitives.push(["not", scheme_not]);
+add_primitives(["not", scheme_not]);
 
 function scheme_equalp(x, y) {
     if (scheme_pairp(x) && scheme_pairp(y)) {
@@ -56,7 +43,7 @@ function scheme_equalp(x, y) {
         return (typeof x === typeof y) && (x === y);
     }
 }
-add_primitives.push(["equal?", scheme_equalp]);
+add_primitives(["equal?", scheme_equalp]);
 
 function scheme_eqp(x, y) {
     if (scheme_numberp(x) && scheme_numberp(y)) {
@@ -65,23 +52,23 @@ function scheme_eqp(x, y) {
         return (typeof x === typeof y) && (x === y);
     }
 }
-add_primitives.push(["eq?", scheme_eqp]);
+add_primitives(["eq?", scheme_eqp]);
 
 function scheme_pairp(x) {
     return x instanceof Pair;
 }
-add_primitives.push(["pair?", scheme_pairp]);
+add_primitives(["pair?", scheme_pairp]);
 
 function scheme_promisep(x) {
     return typeof x === 'Promise';
 }
-add_primitives.push(["promise?", scheme_promisep]);
+add_primitives(["promise?", scheme_promisep]);
 
 function scheme_force(x) {
     check_type(x, scheme_promisep, 0, 'promise');
     return x.evaluate();
 }
-add_primitives.push(["force", scheme_force]);
+add_primitives(["force", scheme_force]);
 
 function scheme_cdr_stream(x) {
     check_type(x, function(x) {
@@ -418,9 +405,6 @@ function scheme_exit() {
     throw new Error('EOF Error');
 }
 add_primitives(["exit", scheme_exit]);
-
-// Adds all primitive functions to PRIMITIVES
-primitive(add_primitives);
 
 function nil() {
     function map(fn) {
